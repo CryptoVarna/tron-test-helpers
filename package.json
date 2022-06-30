@@ -1,0 +1,64 @@
+{
+    "name": "@cryptovarna/tron-test-helpers",
+    "version": "1.7.0",
+    "description": "JavaScript testing helpers for Tron smart contract development.",
+    "baseUrl": "./src",
+    "main": "src/index.js",
+    "files": [
+        "src"
+    ],
+    "scripts": {
+        "lint": "eslint .",
+        "lintfix": "eslint . --fix",
+        "solhint": "solhint -f table contracts/**/*.sol",
+        "compile": "tronbox compile",
+        "migrate": "tronbox migrate --reset --network development",
+        "migrate-mainnet": "source .env && tronbox migrate --network mainnet --reset",
+        "migrate-shasta": "source .env && tronbox migrate --network shasta --reset",
+        "test": "tronbox test",
+        "fullnode": "docker run -it -p 9090:9090 --rm --name tron --env-file=.env.development cryptovarna/tron-test-node:4.2.2",
+        "fullnode-ci": "docker rm -f tron-ci && docker run -d -p 9090:9090 --name tron-ci --env-file=.env.development cryptovarna/tron-test-node:4.2.2",
+        "fullnode-wait": "wait-on -d 20000 -i 1000 http://127.0.0.1:9090/admin/accounts",
+        "clean": "rimraf ./build",
+        "ci-build": "yarn run clean && yarn run lintfix && yarn run compile",
+        "ci-test": "yarn fullnode-ci && yarn fullnode-wait && yarn test",
+        "pub": "yarn publish --access public"
+    },
+    "keywords": [
+        "tron",
+        "smart",
+        "contracts",
+        "test",
+        "solidity",
+        "openzeppelin"
+    ],
+    "author": "CryptoVarna <info@cryptovarna.com>",
+    "license": "MIT",
+    "dependencies": {
+        "ansi-colors": "^3.2.3",
+        "chai": "^4.2.0",
+        "chai-bignumber": "^3.0.0",
+        "dotenv": "^10.0.0",
+        "ethers": "^5.4.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^21.0.0",
+        "@rollup/plugin-multi-entry": "^4.1.0",
+        "@rollup/plugin-node-resolve": "^13.0.5",
+        "eslint": "^5.9.0",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.14.0",
+        "eslint-plugin-mocha-no-only": "^1.1.0",
+        "eslint-plugin-node": "^8.0.0",
+        "eslint-plugin-promise": "^4.0.1",
+        "eslint-plugin-standard": "^4.0.0",
+        "rollup": "^2.58.0",
+        "rollup-plugin-bundle-imports": "^1.5.1",
+        "rollup-plugin-copy": "^3.4.0",
+        "rollup-plugin-uglify": "^6.0.4",
+        "solhint": "^3.3.6",
+        "tronbox": "^2.7.24",
+        "uglify-js": "^3.14.2",
+        "wait-on": "^6.0.0"
+    }
+}
